@@ -1,0 +1,20 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20001/eureka/
+  instance:
+    prefer-ip-address: true
+    #    metadata-map:
+    #      env: ${spring.profiles.active}
+    #      env: hello
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5
+spring:
+  application:
+    name: server-a
+#gray:
+#  client:
+#    enabled: false
+logging:
+  level:
+    com.chenlm.cloud: debug

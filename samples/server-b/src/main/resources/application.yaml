@@ -1,0 +1,14 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20001/eureka/
+  instance:
+    prefer-ip-address: true
+    metadata-map:
+      env: ${spring.profiles.active}
+spring:
+  application:
+    name: server-b
+logging:
+  level:
+    com.chenlm.cloud: debug

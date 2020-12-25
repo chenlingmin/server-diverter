@@ -1,0 +1,21 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:20001/eureka/
+    registry-fetch-interval-seconds: 2
+  instance:
+    prefer-ip-address: true
+spring:
+  application:
+    name: gate
+server:
+  port: 80
+ribbon:
+  ServerListRefreshInterval: 200
+#  NFLoadBalancerPingInterval: 3
+#gray:
+#  client:
+#    enabled: false
+logging:
+  level:
+    com.chenlm.cloud: debug

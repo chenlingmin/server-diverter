@@ -10,7 +10,7 @@
 
 ```xml
 <dependency>
-    <groupId>mo.aomi.cloud</groupId>
+    <groupId>com.chenlm.cloud</groupId>
     <artifactId>spring-boot-netflix-server-diverter-starter</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>
@@ -20,7 +20,7 @@
 
 ```xml
 <dependency>
-    <groupId>mo.aomi.cloud</groupId>
+    <groupId>com.chenlm.cloud</groupId>
     <artifactId>netflix-server-diverter</artifactId>
     <version>1.0-SNAPSHOT</version>
 </dependency>

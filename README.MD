@@ -99,7 +99,7 @@ public class TestConfiguration {
    
 * `server.diverter.enabled` 是否启用服务分流，默认 `true` 
 * `server.diverter.server-mark-name` 服务注册的 metadataMap 的 key，默认为 `env` 
-* `server.diverter.httpHeaderName` 流量染色的http请求头，默认为 `x-env` 
+* `server.diverter.http-header-name` 流量染色的http请求头，默认为 `x-env` 
  
 
 ## 原理

@@ -1,6 +1,7 @@
 package com.chenlm.cloud.coloring;
 
 import com.chenlm.cloud.ServerDiverterProperties;
+import com.chenlm.cloud.coloring.async.HttpHeadersHolder;
 import com.chenlm.cloud.ribbon.support.RibbonFilterContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +10,8 @@ import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 /**
  * @author Chenlm
@@ -55,7 +54,8 @@ public abstract class RequestColoringSupport implements EnvironmentAware {
      *
      * @return 流量标记
      */
-    public String process() {
+    public String markServer() {
+        RibbonFilterContextHolder.clearCurrentContext();
         String env = env();
         if (!StringUtils.isEmpty(env)) {
             RibbonFilterContextHolder.getCurrentContext().add(serverMarkName(), env);
@@ -64,27 +64,19 @@ public abstract class RequestColoringSupport implements EnvironmentAware {
     }
 
     private String env() {
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes();
-        String env = null;
-        if (attributes != null) {
-            HttpServletRequest request = attributes.getRequest();
-            env = request.getHeader(headerName());
+        Optional<String> headerValue = HttpHeadersHolder.getHeaderValue(headerName());
+        if (headerValue.isPresent()) {
+            logger.debug("从 request 请求头 {} 中获取到 {} 标记的流量", headerName(), headerValue.get());
+            return headerValue.get();
         }
-        if (!StringUtils.isEmpty(env)) {
-            logger.debug("从 request 请求头 {} 中获取到 {} 标记的流量", headerName(), env);
-            return env;
+        String serverMark = getServerMarkValue();
+        if (StringUtils.isEmpty(serverMark)) {
+            logger.debug("request 请求头 {} 中获取不到流量标记，也无法从 metadataMap.{} 配置中获取本机标签，将不能进行流量选择服务", headerName(), serverMarkName());
+            return null;
+        } else {
+            logger.debug("request 请求头 {} 中获取不到流量标记，使用本机服务标签 {}", headerName(), serverMark);
+            return serverMark;
         }
-        if (StringUtils.isEmpty(env)) {
-            String serverMark = getServerMarkValue();
-            if (StringUtils.isEmpty(serverMark)) {
-                logger.debug("request 请求头 {} 中获取不到流量标记，也无法从 metadataMap.{} 配置中获取本机标签，将不能进行流量选择服务", headerName(), serverMarkName());
-            } else {
-                env = serverMark;
-                logger.debug("request 请求头 {} 中获取不到流量标记，使用本机服务标签 {}", headerName(), serverMark);
-            }
-        }
-        return env;
     }
 
     private String getServerMarkValue() {
@@ -98,6 +90,5 @@ public abstract class RequestColoringSupport implements EnvironmentAware {
     public void setEnvironment(Environment environment) {
         this.environment = environment;
     }
-
 
 }

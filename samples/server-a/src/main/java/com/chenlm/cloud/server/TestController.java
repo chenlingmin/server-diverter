@@ -1,7 +1,10 @@
 package com.chenlm.cloud.server;
 
+import com.chenlm.cloud.coloring.async.AsyncDecorators;
+import com.chenlm.cloud.coloring.async.HttpHeadersHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +32,24 @@ public class TestController {
     private String value;
     @Value("${spring.application.name}")
     private String name;
+
+    @GetMapping("tttt")
+    public String tttt() {
+        new Thread(AsyncDecorators.HttpHeaderRunnableDecorator.decorate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                HttpHeaders httpHeaders = HttpHeadersHolder.getHttpHeaders();
+                System.out.println(httpHeaders);
+                String test = serverBApi.test();
+            }
+        })).start();
+        return "ok";
+    }
 
 
     @GetMapping("test")

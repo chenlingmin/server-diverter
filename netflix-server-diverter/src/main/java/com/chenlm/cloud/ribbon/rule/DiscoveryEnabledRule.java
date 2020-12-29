@@ -15,11 +15,11 @@
  */
 package com.chenlm.cloud.ribbon.rule;
 
-import com.chenlm.cloud.ribbon.predicate.DiscoveryEnabledPredicate;
 import com.netflix.loadbalancer.AbstractServerPredicate;
 import com.netflix.loadbalancer.AvailabilityPredicate;
 import com.netflix.loadbalancer.CompositePredicate;
 import com.netflix.loadbalancer.IRule;
+import com.chenlm.cloud.ribbon.predicate.DiscoveryEnabledPredicate;
 import org.springframework.util.Assert;
 
 /**

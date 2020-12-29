@@ -6,11 +6,11 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import java.util.concurrent.Executor;
 
 /**
- * 处理 Spring Bean 中的 {@link Executor} 支持异步线程传递 RequestHolder 中的 requestAttributes
+ * 处理 Spring Bean 中的 {@link Executor} 支持异步线程传递 HttpHeadersHolder 中的 httpHeaders
  *
  * @author Chenlm
  */
-public class RequestHolderInheritableExecutorBeanPostProcessorProxy extends ExecutorRequestInheritableProxySupport implements BeanPostProcessor {
+public class HttpHeadersInheritableExecutorBeanPostProcessor extends HttpHeaderInheritableExecutorProxySupport implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

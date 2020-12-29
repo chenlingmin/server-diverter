@@ -1,11 +1,11 @@
 package com.chenlm.cloud.ribbon.rule;
 
-import com.chenlm.cloud.ribbon.support.RibbonFilterContextHolder;
 import com.google.common.base.Optional;
 import com.netflix.loadbalancer.AbstractServerPredicate;
 import com.netflix.loadbalancer.ClientConfigEnabledRoundRobinRule;
 import com.netflix.loadbalancer.ILoadBalancer;
 import com.netflix.loadbalancer.Server;
+import com.chenlm.cloud.ribbon.support.RibbonFilterContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,19 +29,15 @@ public abstract class GuaranteePredicateBasedRule extends ClientConfigEnabledRou
     @Override
     public Server choose(Object key) {
         ILoadBalancer lb = getLoadBalancer();
-        try {
-            Optional<Server> server = getPredicate().chooseRoundRobinAfterFiltering(lb.getAllServers(), key);
+        Optional<Server> server = getPredicate().chooseRoundRobinAfterFiltering(lb.getAllServers(), key);
 
-            if (server.isPresent()) {
-                logger.debug("根据 {} 策略选择到服务 {}", RibbonFilterContextHolder.getCurrentContext().getAttributes(), server.get());
-                return server.get();
-            } else {
-                Server result = super.choose(key);
-                logger.info("根据 {} 策略未选择到服务，使用保底策略选择到: {}", RibbonFilterContextHolder.getCurrentContext().getAttributes(), result);
-                return result;
-            }
-        } finally {
-            RibbonFilterContextHolder.clearCurrentContext();
+        if (server.isPresent()) {
+            logger.debug("根据 {} 策略选择到服务 {}", RibbonFilterContextHolder.getCurrentContext().getAttributes(), server.get());
+            return server.get();
+        } else {
+            Server result = super.choose(key);
+            logger.info("根据 {} 策略未选择到服务，使用保底策略选择到: {}", RibbonFilterContextHolder.getCurrentContext().getAttributes(), result);
+            return result;
         }
     }
 }

@@ -13,7 +13,7 @@ import java.util.concurrent.Executor;
  * 处理 Spring 异步配置 {@link AsyncConfigurer}支持异步线程传递 RequestHolder 中的 requestAttributes
  */
 
-public class RequestInheritableProxyAsyncConfigurerBeanPostProcessor extends ExecutorRequestInheritableProxySupport implements BeanPostProcessor, PriorityOrdered {
+public class HttpHeadersInheritableAsyncConfigurerBeanPostProcessor extends HttpHeaderInheritableExecutorProxySupport implements BeanPostProcessor, PriorityOrdered {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

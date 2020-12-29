@@ -5,19 +5,18 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactoryBean;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.http.HttpHeaders;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 
-import static com.chenlm.cloud.coloring.async.AsyncDecorators.callable;
-import static com.chenlm.cloud.coloring.async.AsyncDecorators.runnable;
+import static com.chenlm.cloud.coloring.async.AsyncDecorators.HttpHeaderCallableDecorator;
+import static com.chenlm.cloud.coloring.async.AsyncDecorators.HttpHeaderRunnableDecorator;
 
 /**
  * @author Chenlm
  */
-public class ExecutorRequestInheritableProxySupport {
+public class HttpHeaderInheritableExecutorProxySupport {
 
     @SuppressWarnings("unchecked")
     public <T> T createProxy(Executor bean) {
@@ -37,8 +36,8 @@ class ExecutorMethodInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation)
             throws Throwable {
 
-        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-        if (null == requestAttributes) {
+        HttpHeaders httpHeaders = HttpHeadersHolder.getHttpHeaders();
+        if (null == httpHeaders) {
             logger.debug("非 request 作用域，无法传递 ");
             return invocation.proceed();
         } else if (invocation.getArguments() == null) {
@@ -48,10 +47,10 @@ class ExecutorMethodInterceptor implements MethodInterceptor {
 
             for (int i = 0; i < arguments.length; i++) {
                 if (arguments[i] instanceof Runnable) {
-                    arguments[i] = runnable.decorate((Runnable) arguments[i]);
+                    arguments[i] = HttpHeaderRunnableDecorator.decorate((Runnable) arguments[i]);
                     logger.debug("包装 {}.{} 中的 args[{}], 获得 requestAttributes 线程传递能力", invocation.getThis().getClass().getName(), invocation.getMethod().getName(), i);
                 } else if (arguments[i] instanceof Callable) {
-                    arguments[i] = callable.decorate((Callable) arguments[i]);
+                    arguments[i] = HttpHeaderCallableDecorator.decorate((Callable) arguments[i]);
                     logger.debug("包装 {}.{} 中的 args[{}], 获得 requestAttributes 线程传递能力", invocation.getThis().getClass().getName(), invocation.getMethod().getName(), i);
                 }
             }

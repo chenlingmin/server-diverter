@@ -1,9 +1,9 @@
 package com.chenlm.cloud.coloring.feign;
 
 
-import com.chenlm.cloud.ServerDiverterProperties;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import com.chenlm.cloud.ServerDiverterProperties;
 import com.chenlm.cloud.coloring.RequestColoringSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class FeignColoringInterceptor extends RequestColoringSupport implements 
 
     @Override
     public void apply(RequestTemplate template) {
-        String env = process();
+        String env = markServer();
         if (!StringUtils.isEmpty(env)) {
             addHeader(template, headerName(), env);
         }

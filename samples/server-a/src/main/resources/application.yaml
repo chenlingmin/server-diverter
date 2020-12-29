@@ -18,3 +18,7 @@ spring:
 logging:
   level:
     com.chenlm.cloud: debug
+#    com.netflix: debug
+feign:
+  hystrix:
+    enabled: true

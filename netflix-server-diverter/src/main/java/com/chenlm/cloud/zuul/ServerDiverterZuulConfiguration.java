@@ -1,7 +1,7 @@
 package com.chenlm.cloud.zuul;
 
-import com.chenlm.cloud.ServerDiverterProperties;
 import com.netflix.zuul.ZuulFilter;
+import com.chenlm.cloud.ServerDiverterProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -20,9 +20,13 @@ public class ServerDiverterZuulConfiguration {
         return new SimpleHeaderServerSelector(properties.getHttpHeaderName());
     }
 
+    @Bean
+    public ZuulFilter serverSelectorPreZuulFilter(ServerDiverterProperties properties, List<ServerSelector> serverSelectors) {
+        return new ServerSelectorPreZuulFilter(properties, serverSelectors);
+    }
 
     @Bean
-    public ZuulFilter testZuulFilter(ServerDiverterProperties properties, List<ServerSelector> serverSelectors) {
-        return new ServerDiverterZuulFilter(properties, serverSelectors);
+    public ZuulFilter serverSelectorPostZuulFilter() {
+        return new ServerSelectorPostZuulFilter();
     }
 }

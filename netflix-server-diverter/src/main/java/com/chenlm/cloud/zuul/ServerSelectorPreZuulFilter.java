@@ -1,9 +1,9 @@
 package com.chenlm.cloud.zuul;
 
-import com.chenlm.cloud.ServerDiverterProperties;
-import com.chenlm.cloud.ribbon.support.RibbonFilterContextHolder;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.chenlm.cloud.ServerDiverterProperties;
+import com.chenlm.cloud.ribbon.support.RibbonFilterContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
@@ -15,13 +15,13 @@ import java.util.List;
 /**
  * @author Chenlm
  */
-public class ServerDiverterZuulFilter extends ZuulFilter {
-    private static final Logger logger = LoggerFactory.getLogger(ServerDiverterZuulFilter.class);
+public class ServerSelectorPreZuulFilter extends ZuulFilter {
+    private static final Logger logger = LoggerFactory.getLogger(ServerSelectorPreZuulFilter.class);
 
     private final ServerDiverterProperties properties;
     private final List<ServerSelector> serverSelectors;
 
-    public ServerDiverterZuulFilter(ServerDiverterProperties properties, List<ServerSelector> serverSelectors) {
+    public ServerSelectorPreZuulFilter(ServerDiverterProperties properties, List<ServerSelector> serverSelectors) {
         this.properties = properties;
         this.serverSelectors = serverSelectors;
     }
@@ -43,6 +43,7 @@ public class ServerDiverterZuulFilter extends ZuulFilter {
 
     @Override
     public Object run() {
+        RibbonFilterContextHolder.clearCurrentContext();
         HttpServletRequest request = RequestContext.getCurrentContext()
                 .getRequest();
         String env = null;

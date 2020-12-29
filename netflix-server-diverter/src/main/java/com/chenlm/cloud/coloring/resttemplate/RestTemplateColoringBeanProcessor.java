@@ -2,7 +2,7 @@ package com.chenlm.cloud.coloring.resttemplate;
 
 import com.chenlm.cloud.ServerDiverterProperties;
 import com.chenlm.cloud.coloring.RequestColoringSupport;
-import com.chenlm.cloud.coloring.async.ExecutorRequestInheritableProxySupport;
+import com.chenlm.cloud.coloring.async.HttpHeaderInheritableExecutorProxySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @author Chenlm
  */
-public class RestTemplateColoringBeanProcessor extends ExecutorRequestInheritableProxySupport implements BeanPostProcessor {
+public class RestTemplateColoringBeanProcessor extends HttpHeaderInheritableExecutorProxySupport implements BeanPostProcessor {
     private static final Logger logger = LoggerFactory.getLogger(RestTemplateColoringBeanProcessor.class);
 
     private final RestTemplateColoringInterceptor restTemplateColoringInterceptor;
@@ -73,7 +73,7 @@ public class RestTemplateColoringBeanProcessor extends ExecutorRequestInheritabl
 
         @Override
         public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-            String env = process();
+            String env = markServer();
             if (!StringUtils.isEmpty(env)) {
                 HttpHeaders headers = request.getHeaders();
                 headers.add(headerName(), env);
@@ -92,7 +92,7 @@ public class RestTemplateColoringBeanProcessor extends ExecutorRequestInheritabl
 
         @Override
         public ListenableFuture<ClientHttpResponse> intercept(HttpRequest request, byte[] body, AsyncClientHttpRequestExecution execution) throws IOException {
-            String env = process();
+            String env = markServer();
             if (!StringUtils.isEmpty(env)) {
                 HttpHeaders headers = request.getHeaders();
                 headers.add(headerName(), env);

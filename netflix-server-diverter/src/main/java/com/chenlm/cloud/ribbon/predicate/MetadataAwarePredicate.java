@@ -15,9 +15,9 @@
  */
 package com.chenlm.cloud.ribbon.predicate;
 
-import com.chenlm.cloud.ribbon.support.RibbonFilterContextHolder;
 import com.netflix.niws.loadbalancer.DiscoveryEnabledServer;
 import com.chenlm.cloud.ribbon.api.RibbonFilterContext;
+import com.chenlm.cloud.ribbon.support.RibbonFilterContextHolder;
 
 import java.util.Collections;
 import java.util.Map;

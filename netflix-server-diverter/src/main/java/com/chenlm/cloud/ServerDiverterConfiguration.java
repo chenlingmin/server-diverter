@@ -1,7 +1,7 @@
 package com.chenlm.cloud;
 
-import com.chenlm.cloud.coloring.async.RequestInheritableAsyncConfigurerConfiguration;
-import com.chenlm.cloud.coloring.async.RequestInheritableExecutorConfiguration;
+import com.chenlm.cloud.coloring.async.HttpHeadersInheritableAsyncConfigurerConfiguration;
+import com.chenlm.cloud.coloring.async.HttpHeadersInheritableExecutorConfiguration;
 import com.chenlm.cloud.coloring.feign.FeignColoringConfiguration;
 import com.chenlm.cloud.coloring.hystrix.HystrixColoringConfiguration;
 import com.chenlm.cloud.coloring.resttemplate.RestTemplateColoringConfiguration;
@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-        RequestInheritableAsyncConfigurerConfiguration.class,
-        RequestInheritableExecutorConfiguration.class,
+        HttpHeadersInheritableAsyncConfigurerConfiguration.class,
+        HttpHeadersInheritableExecutorConfiguration.class,
         FeignColoringConfiguration.class,
         RestTemplateColoringConfiguration.class,
         HystrixColoringConfiguration.class,

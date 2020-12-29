@@ -7,12 +7,14 @@ import com.netflix.hystrix.strategy.concurrency.HystrixConcurrencyStrategy;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestVariable;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestVariableLifecycle;
 import com.netflix.hystrix.strategy.properties.HystrixProperty;
-import com.chenlm.cloud.coloring.async.AsyncDecorators;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import static com.chenlm.cloud.coloring.async.AsyncDecorators.HttpHeaderCallableDecorator;
+import static com.chenlm.cloud.coloring.async.AsyncDecorators.RibbonFilterContextCallableDecorator;
 
 /**
  * @author Chenlm
@@ -63,8 +65,14 @@ public class RequestContextConcurrencyStrategy extends HystrixConcurrencyStrateg
     @Override
     public <T> Callable<T> wrapCallable(Callable<T> callable) {
         return existingConcurrencyStrategy != null
-                ? existingConcurrencyStrategy
-                .wrapCallable(AsyncDecorators.callable.decorate(callable))
-                : super.wrapCallable(AsyncDecorators.callable.decorate(callable));
+                ?
+                existingConcurrencyStrategy.wrapCallable(HttpHeaderCallableDecorator.decorate(
+                        RibbonFilterContextCallableDecorator.decorate(callable)
+                )) :
+                super.wrapCallable(HttpHeaderCallableDecorator.decorate(
+                        RibbonFilterContextCallableDecorator.decorate(callable)
+                ));
     }
+
+
 }

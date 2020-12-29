@@ -15,9 +15,9 @@
  */
 package com.chenlm.cloud.ribbon.support;
 
+import com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList;
 import com.chenlm.cloud.ribbon.rule.DiscoveryEnabledRule;
 import com.chenlm.cloud.ribbon.rule.MetadataAwareRule;
-import com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

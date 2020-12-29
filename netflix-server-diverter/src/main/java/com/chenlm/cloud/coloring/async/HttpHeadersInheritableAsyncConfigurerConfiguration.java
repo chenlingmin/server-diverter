@@ -13,11 +13,11 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 @Configuration
 @ConditionalOnClass(AsyncConfigurer.class)
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-public class RequestInheritableAsyncConfigurerConfiguration {
+public class HttpHeadersInheritableAsyncConfigurerConfiguration {
 
     @Bean
-    public RequestInheritableProxyAsyncConfigurerBeanPostProcessor requestInheritableAsyncConfigurerBeanPostProcessor() {
-        return new RequestInheritableProxyAsyncConfigurerBeanPostProcessor();
+    public HttpHeadersInheritableAsyncConfigurerBeanPostProcessor requestInheritableAsyncConfigurerBeanPostProcessor() {
+        return new HttpHeadersInheritableAsyncConfigurerBeanPostProcessor();
     }
 
 

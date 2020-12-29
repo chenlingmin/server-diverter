@@ -10,10 +10,10 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
  * @author Chenlm
  */
 @Configuration
-public class RequestInheritableExecutorConfiguration {
+public class HttpHeadersInheritableExecutorConfiguration {
     @Bean
-    public RequestHolderInheritableExecutorBeanPostProcessorProxy requestHolderInheritableExecutorBeanPostProcessor() {
-        return new RequestHolderInheritableExecutorBeanPostProcessorProxy();
+    public HttpHeadersInheritableExecutorBeanPostProcessor requestHolderInheritableExecutorBeanPostProcessor() {
+        return new HttpHeadersInheritableExecutorBeanPostProcessor();
     }
 
     @Bean

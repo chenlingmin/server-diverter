@@ -1,7 +1,7 @@
 package com.chenlm.cloud.coloring.resttemplate;
 
 import com.chenlm.cloud.ServerDiverterProperties;
-import com.chenlm.cloud.coloring.async.ExecutorRequestInheritableProxySupport;
+import com.chenlm.cloud.coloring.async.HttpHeaderInheritableExecutorProxySupport;
 import com.chenlm.cloud.coloring.resttemplate.RestTemplateColoringBeanProcessor.AsyncRestTemplateColoringInterceptor;
 import com.chenlm.cloud.coloring.resttemplate.RestTemplateColoringBeanProcessor.RestTemplateColoringInterceptor;
 import com.chenlm.cloud.eureka.MarkServerConfiguration;
@@ -20,7 +20,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @ConditionalOnClass({RestTemplate.class, AsyncRestTemplate.class})
 @AutoConfigureAfter(MarkServerConfiguration.class)
-public class RestTemplateColoringConfiguration extends ExecutorRequestInheritableProxySupport {
+public class RestTemplateColoringConfiguration extends HttpHeaderInheritableExecutorProxySupport {
 
 
     @Bean
